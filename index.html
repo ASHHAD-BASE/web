@@ -1,12 +1,204 @@
-<!DOCTYPE html><html><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<title>ASHHAD RESOURCES</title>
-<script src="index.js" defer></script>
-<link rel="manifest" href="manifest.webmanifest">
-</head><body><center>
-<style type="text/css">center,h2{margin-top:0;}body,html{margin:0;padding:0;}h2{padding:2% 0;color:#fff;background:#000;}a{text-decoration:none;color:#000;font-weight:500;}</style>
-<h2>ASHHAD RESOURCES</h2>
-<a href="Vrec-2-2-timetable/" ><img height="100px" width="100px" src="timetable/icon/icon.png" /><br/>COLLAGE TIME-TABLE</a>
-</center><button class="add-button">Add to home screen</button>
+<!DOCTYPE html>
+<html>
+<head>
+<title>ASHHAD SEARCH</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style type="text/css">
+body,html,head{padding:0;margin:0;}
+#input{
+width:80%;padding:1vw;margin:2vw;max-width:290px;
+border-radius:5px;border:1px solid #000;
+margin-left:1px;
+}
+input:disabled{
+background:#ccc;
+}
+.cont{
+width:95vw;margin:2.5vw;
+padding:0;overflow:scroll;
+min-height:40vh;
+box-shadow:0 0 3.5px #777;border-radius:5px;
+}
+#table{
+border-collapse:collapse;
+padding:0;margin:5px;
+display:inline-table;
+text-align:center;
+}
+td,th{
+border:1px solid #000;padding:5px;
+white-space:nowrap;
+}
+h3{
+white-space:pre-wrap;
+}
+button{
+background:#fff;padding:7px;
+width:90%;max-width:310px;
+border:1px solid #000;border-radius:5px;
+}
+button:focus,input:focus{outline:none;}
+button:active{transform:scale(.95);}
+button:disabled{
+background:#ddd;
+}
 
-</body></html>
+@media print {
+center:first-child,button,select{display:none;}
+.cont{width:100%;margin:0;
+padding:0;overflow:auto;
+min-height:auto;display:inline;
+box-shadow:none;border-radius:0;
+}
+#table{display:table;width:100vw;font-size:0.75vmax;}
+td,th{white-space:normal;
+height:auto;word-break:normal;
+
+}
+}
+</style>
+</head>
+<body>
+<center style="white-space:nowrap;" >
+W<input value="174001193" maxlength="12"  disabled="disabled" type="number"  id="input" placeholder="ENTER WORK ORDER NUMBER"/>
+</br>
+<select id="dxsort" onchange="writeR()">
+<option value="all" default>all</option>
+<option value="D">D</option>
+<option value="X">X</option>
+</select>
+</br>
+<button disabled="disabled" id="button"  onclick="writeR()">Search</button>
+
+</br>
+<h3 id="stat">Enter WORK ORDER NUMBER to display results.</h3>
+</center>
+<div class="cont">
+<table id="table">
+</table>
+</div>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-database.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+ https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+let dxstat = document.getElementById("dxsort");
+let table = document.getElementById("table") ,stat=document.getElementById("stat");
+// Your web app's Firebase configuration
+var firebaseConfig = {
+apiKey: "AIzaSyBoASUtStv-VOeXsaPRyYOKAfyFRW2q2LY",
+authDomain: "awais-2938f.firebaseapp.com",
+databaseURL: "https://awais-2938f.firebaseio.com",
+projectId: "awais-2938f",
+storageBucket: "awais-2938f.appspot.com",
+messagingSenderId: "314589639640",
+appId: "1:314589639640:web:1d182783beadae1f6ef8ad"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+var database = firebase.database().ref();
+
+function writeR(){
+stat.innerText= "Loading...";
+stat.style.color="#000";
+table.innerHTML="";
+let serchk =document.getElementById("input").value;
+if(serchk.length!=9){
+stat.innerHTML="Enter 9 digits</br>you have entered "+serchk.length+" digits";
+stat.style.color="#f00";
+return;
+}
+database.child('Sheet1/').orderByChild("WORK ORDER")
+.startAt("W"+ serchk +"000/0000")
+.endAt("W"+ serchk +"999/9999")
+/*
+.equalTo("W174001193401/0011")
+174001193401
+*/
+.on("value", function(snapshot) {
+//document.write( JSON.stringify(snapshot.val()) );
+table.innerHTML="";
+let keys={},
+keyf=["SEC CODE","MATERIAL DESCRIPTION","WORK ORDER","MVT","dX","QTY WITH ORDER","QTY ISSUED","QTY REMAIN","OFFICE","STATUS OF ORDER"];
+let dat = "";
+if(snapshot.exists()){
+
+dat += "<tr>";
+keyf.forEach(function(key){
+dat+= "<th>"+key+"</th>";
+
+});
+dat+="</tr>";
+
+snapshot.forEach(function(data) {
+
+if( (dxstat.value=="D"&&data.val()["dX"]=="D")||(dxstat.value=="all")||(dxstat.value=="X"&&data.val()["dX"]=="X") ){
+}
+else{return;}
+dat+= "<tr>";
+  keyf.forEach(function(key){
+  dat+= "<td>"+data.val()[key]+"</td>";
+  });
+dat+="</tr>";
+
+});
+
+table.innerHTML=dat;
+getw1();
+stat.innerText= "Search results for \"W"+serchk+'"';
+}else{
+table.innerHTML="";
+stat.innerText= "[ NO DATA FOUND ]";
+stat.style.color="#f00";
+}
+}, error => {
+console.error(error);
+});
+}
+input.disabled=false;
+document.getElementById("button").disabled=false;
+
+function pt(){
+window.print();
+}
+
+function getw1(){
+let serchk =document.getElementById("input").value;
+database.child('Sheet1/').orderByChild("WORK ORDER")
+.startAt("1W"+ serchk +"000/0000")
+.endAt("1W"+ serchk +"999/9999")
+.on("value", function(snapshot) {
+let keys={},
+keyf=["SEC CODE","MATERIAL DESCRIPTION","WORK ORDER","MVT","dX","QTY WITH ORDER","QTY ISSUED","QTY REMAIN","OFFICE","STATUS OF ORDER"];
+let dat = "";
+if(snapshot.exists()){
+dat += "<hr>";
+snapshot.forEach(function(data) {
+if( (dxstat.value=="D"&&data.val()["dX"]=="D")||(dxstat.value=="all")||(dxstat.value=="X"&&data.val()["dX"]=="X") ){
+}
+else{return;}
+dat+= "<tr>";
+  keyf.forEach(function(key){
+  dat+= "<td>"+data.val()[key]+"</td>";
+  });
+dat+="</tr>";
+
+});
+
+table.innerHTML+=dat;
+stat.innerText= "Search results for \"W"+serchk+'"';
+}else{}
+}, error => {
+console.error(error);
+});
+}
+</script>
+<center>
+<button onclick="pt()">PRINT</button></br>
+<code>THIS WEB APP IS CREATED BY ASHHAD</code></center>
+</body>
+</html>
