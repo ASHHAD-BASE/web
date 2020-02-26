@@ -1,0 +1,108 @@
+body,html,head{padding:0;margin:0;font-family: Serif !important;}
+#input{
+width:60%;padding:.5vmax;margin:3px;max-width:200px;
+border-radius:5px;border:1px solid #000;
+margin-left:1px;font-weight:800;
+font-size:110%;
+}
+input:disabled{
+background:#ccc;
+}
+.cont{
+width:95vw;margin:2.5vw;
+padding:0;overflow:scroll;
+min-height:40vh;
+box-shadow:0 0 3.5px #777;border-radius:5px;
+}
+#ilogo{
+width:40vw;max-width:200px;
+margin:7px;
+}
+#table{
+border-collapse:collapse;
+padding:0;margin:5px;
+display:inline-table;
+text-align:center;
+transform-origin:top left;
+}
+#table tr td:nth-child(2){text-align:left;}
+td,th{
+border:1px solid #000;padding:5px;
+white-space:nowrap;
+}
+tr:hover td{
+font-weight:800;color:#00a;
+}
+tr:first-child {
+color:#fff;background: #29f;
+text-align:center;
+}
+h3{
+white-space:pre-wrap;
+}
+button{
+background:#29f;padding:.5vmax;color:#fff;
+width:30%;max-width:170px;font-weight:800;
+border:1px solid #28f;border-radius:5px;
+font-size:100%;
+}
+button:focus,input:focus{outline:none;}
+button:active{transform:scale(.95);}
+button:disabled{
+background:#ddd;
+}
+select{
+width:30vw;max-width:140px;
+background:#fff;font-weight:700;
+border-radius:5px;text-align-last:center;
+}
+
+#pfield{display:none;}
+#pfield p{
+display:inline-grid;width:45vw;
+font-family:Arial,sans-serif;font-weight:350;
+}
+#pfield p:nth-child(odd){
+text-align:left;
+}
+#pfield p:nth-child(even){
+text-align:right;
+}
+#table[e="true"] th{
+white-space:normal;
+/*
+max-width:calc(100vw/11);
+min-width:calc(100vw/12);
+
+transform:scale(0.65);
+*/
+}
+
+@media print {
+input,h3,button{display:none;}
+select{border:none;width:max-content;
+-moz-appearance: window;
+-webkit-appearance: none;
+}
+.cont{width:100%;margin:0;
+padding:0;overflow:auto;
+min-height:auto;display:inline;
+box-shadow:none;border-radius:0;
+}
+#table{display:table;width:100vw;font-size:0.75vmax;}
+td,th{white-space:normal;
+height:auto;word-break:normal;
+color:#000 !important;
+}
+.cen{
+margin-bottom:15px !important;
+}
+#pfield{
+display:block;
+}
+td,th{white-space:normal;
+height:auto;word-break:normal;
+}
+table { page-break-inside:auto }
+tr    { page-break-inside:avoid; page-break-after:auto }
+}

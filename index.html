@@ -1,0 +1,50 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<title>Bin Garboo Electrical</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="index.css"/>
+</head><body>
+<center>
+<img id="ilogo" src="icon.jpg"/></br>
+<div id="pfield">
+<p>WORK ORDER NUMBER:</p>
+<p>time</p>
+</div>
+</center>
+<center class="cen"  style="white-space:nowrap;" >
+<input onkeypress='ent(event)' value="174001193" maxlength="12"  disabled="disabled" type="number"  id="input" placeholder="ENTER WORK ORDER NUMBER"/>
+
+<button disabled="disabled" id="button"  onclick="writeR()">Search</button>
+</br>
+<lable>DX:</lable>
+<select disabled="disabled"  id="dXfil" onchange="filterState(this)">
+<option value="all" default>ALL</option>
+
+</select>
+<lable> | MVT:</lable>
+<select disabled="disabled" id="MVTfil" onchange="filterState(this)">
+<option value="all" default>ALL</option>
+
+</select>
+
+
+</br>
+<h3 id="stat">Enter WORK ORDER NUMBER to display results.</h3>
+</center>
+<div class="cont">
+<table id="table">
+</table>
+</div>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-database.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script src="main.js"></script>
+<center>
+<button id="pbtn" disabled="disabled" onclick="pt()">PRINT</button>
+</br></br>
+<code style="opacity:0.7;">THIS WEB APP IS CREATED BY ASHHAD</code></center>
+</body>
+</html>
